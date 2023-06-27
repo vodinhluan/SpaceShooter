@@ -19,10 +19,7 @@ public class Enemy extends GameEntity {
         super.update(deltaTime);
     }
 
-    public void shoot()
-    {
 
-    }
 
     public void spawnEnemy() {
         bodyReact.x = drawShape.randomX();
