@@ -35,6 +35,7 @@ public class Player extends GameEntity {
         bodyReact.x = pX;
         bodyReact.y = pY;
 
+
         if (moveLeft) {
             pX = pX - playerSpeed * deltaTime;
         } else if (moveRight) {
@@ -45,11 +46,16 @@ public class Player extends GameEntity {
             pY = pY - playerSpeed * deltaTime;
         }
 
+        // In ra thông tin debug
+        System.out.println("moveLeft: " + moveLeft);
+        System.out.println("moveRight: " + moveRight);
+        System.out.println("moveUp: " + moveUp);
+        System.out.println("moveDown: " + moveDown);
+
         for(Bullet bullet : bullets)
         {
             bullet.update(deltaTime);
         }
-
 
         // Duyệt các phần tử từ đầu đến cuối của một collection.
         //  Cho phép xóa phần tử khi lặp một collection.
@@ -65,7 +71,8 @@ public class Player extends GameEntity {
         }
     }
 
-    private void setInput()
+
+    public void setInput()
     {
         Gdx.input.setInputProcessor(new InputAdapter() {
             // Di chuyen
@@ -82,7 +89,6 @@ public class Player extends GameEntity {
                 } else if (keyCode == Input.Keys.SPACE) {
                     bullets.add(new Bullet(drawShape, pX, pY, Player.this));
                 }
-
                 return true;
             }
 
@@ -100,8 +106,6 @@ public class Player extends GameEntity {
                 }
                 return true;
             }
-
         });
     }
-
 }
