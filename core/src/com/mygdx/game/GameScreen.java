@@ -7,8 +7,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.DrawShape.Bullet;
 import com.mygdx.game.DrawShape.DrawShape;
+import com.mygdx.game.DrawShape.Enemy;
 import com.mygdx.game.DrawShape.Player;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class GameScreen extends ScreenAdapter {
@@ -16,12 +22,21 @@ public class GameScreen extends ScreenAdapter {
     ShapeRenderer shapeRenderer;
     DrawShape drawShape;
     Player player;
+    Enemy enemy;
+    Bullet bullet;
+
+    //private boolean isCollision = false;
+    public List<Bullet> bullets = new ArrayList<>();
 
     public GameScreen(MyGdxGame game) {
         this.game = game;
         shapeRenderer = new ShapeRenderer();
         drawShape = new DrawShape(shapeRenderer, game);
         player = new Player(new Rectangle(), drawShape);
+        enemy = new Enemy(new Rectangle(), drawShape);
+        bullet = new Bullet(drawShape, player.pX+20, player.pY+20, player);
+        bullets = new ArrayList<>();
+
     }
 
     @Override
@@ -36,6 +51,27 @@ public class GameScreen extends ScreenAdapter {
 
         player.drawShape.drawRect(new Rectangle(player.bodyReact.x, player.bodyReact.y,50, 20), player.color);
         player.update(delta);
+
+        enemy.update(delta);
+
+        for (Bullet bullet : bullets) {
+            bullet.update(delta);
+            if (bullet.getBounds().overlaps(enemy.getBounds())) //Phương thức overlaps() chỉ trả về giá trị boolean (true hoặc false)
+            {
+                enemy.spawnEnemy();
+                bullets.remove(bullet);
+            }
+        }
+
+
+//        if (bullet.getBounds().overlaps(enemy.getBounds())) {
+//            isCollision = true;
+//        }
+//        enemy.update(delta);
+//        if (isCollision) {
+//            enemy.spawnEnemy();
+//            isCollision = false;
+//        }
     }
 
     @Override

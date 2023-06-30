@@ -47,10 +47,10 @@ public class Player extends GameEntity {
         }
 
         // In ra thông tin debug
-        System.out.println("moveLeft: " + moveLeft);
-        System.out.println("moveRight: " + moveRight);
-        System.out.println("moveUp: " + moveUp);
-        System.out.println("moveDown: " + moveDown);
+//        System.out.println("moveLeft: " + moveLeft);
+//        System.out.println("moveRight: " + moveRight);
+//        System.out.println("moveUp: " + moveUp);
+//        System.out.println("moveDown: " + moveDown);
 
         for(Bullet bullet : bullets)
         {
@@ -88,6 +88,7 @@ public class Player extends GameEntity {
                     moveDown = true;
                 } else if (keyCode == Input.Keys.SPACE) {
                     bullets.add(new Bullet(drawShape, pX+20, pY+20, Player.this));
+                    System.out.println("ANH YEU EM");
                 }
                 return true;
             }
