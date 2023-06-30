@@ -87,7 +87,7 @@ public class Player extends GameEntity {
                 } else if (keyCode == Input.Keys.S) {
                     moveDown = true;
                 } else if (keyCode == Input.Keys.SPACE) {
-                    bullets.add(new Bullet(drawShape, pX, pY, Player.this));
+                    bullets.add(new Bullet(drawShape, pX+20, pY+20, Player.this));
                 }
                 return true;
             }

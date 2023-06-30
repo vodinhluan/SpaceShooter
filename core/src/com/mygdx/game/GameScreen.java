@@ -29,13 +29,12 @@ public class GameScreen extends ScreenAdapter {
         player.setInput();
     }
 
-
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        player.drawShape.drawRect(new Rectangle(250, 150, 50, 20), player.color);
+        player.drawShape.drawRect(new Rectangle(player.bodyReact.x, player.bodyReact.y,50, 20), player.color);
         player.update(delta);
     }
 
