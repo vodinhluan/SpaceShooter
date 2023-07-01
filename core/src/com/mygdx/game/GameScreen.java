@@ -23,20 +23,23 @@ public class GameScreen extends ScreenAdapter {
     DrawShape drawShape;
     Player player;
     Enemy enemy;
-    Bullet bullet;
 
-    //private boolean isCollision = false;
     public List<Bullet> bullets = new ArrayList<>();
 
     public GameScreen(MyGdxGame game) {
         this.game = game;
         shapeRenderer = new ShapeRenderer();
         drawShape = new DrawShape(shapeRenderer, game);
-        player = new Player(new Rectangle(), drawShape);
-        enemy = new Enemy(new Rectangle(), drawShape);
-        bullet = new Bullet(drawShape, player.pX+20, player.pY+20, player);
-        bullets = new ArrayList<>();
 
+        player = new Player(new Rectangle(250, 250, 25,  50), drawShape, new Runnable() {
+            @Override
+            public void run() {
+                bullets.add(new Bullet(drawShape, player.pX, player.pY+20));
+            }
+        });
+
+        enemy = new Enemy(new Rectangle(250, 350, 50,  25), drawShape);
+        bullets = new ArrayList<>();
     }
 
     @Override
@@ -49,29 +52,22 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        player.drawShape.drawRect(new Rectangle(player.bodyReact.x, player.bodyReact.y,50, 20), player.color);
+        enemy.update(delta);
         player.update(delta);
 
-        enemy.update(delta);
+        List<Bullet> destroyThisBullets = new ArrayList<>();
 
         for (Bullet bullet : bullets) {
             bullet.update(delta);
-            if (bullet.getBounds().overlaps(enemy.getBounds())) //Phương thức overlaps() chỉ trả về giá trị boolean (true hoặc false)
+
+            if (bullet.getBounds().overlaps(enemy.getBounds()))
             {
-                enemy.spawnEnemy();
-                bullets.remove(bullet);
+                enemy.bodyReact.x = drawShape.randomX();
+                destroyThisBullets.add(bullet);
             }
         }
 
-
-//        if (bullet.getBounds().overlaps(enemy.getBounds())) {
-//            isCollision = true;
-//        }
-//        enemy.update(delta);
-//        if (isCollision) {
-//            enemy.spawnEnemy();
-//            isCollision = false;
-//        }
+        bullets.removeAll(destroyThisBullets);
     }
 
     @Override

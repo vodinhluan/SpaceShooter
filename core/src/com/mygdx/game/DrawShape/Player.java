@@ -11,10 +11,14 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Player extends GameEntity {
-    public Player(Rectangle bodyReact, DrawShape drawShape) {
+    public Player(Rectangle bodyReact, DrawShape drawShape, Runnable onPlayerShootListener) {
         super(bodyReact, drawShape);
         color = Color.ORANGE;
+        this.onPlayerShotsListener = onPlayerShootListener;
         setInput();
+
+        pX = bodyReact.x;
+        pY = bodyReact.y;
     }
 
     private boolean moveLeft;
@@ -22,12 +26,11 @@ public class Player extends GameEntity {
     private boolean moveUp;
     private boolean moveDown;
 
-    public float pX = 280;
-    public float pY = 120;
+    public float pX;
+    public float pY;
 
     float playerSpeed = 100;
-
-    public List<Bullet> bullets = new ArrayList<>();
+    Runnable onPlayerShotsListener;
 
     @Override
     public void update(float deltaTime) {
@@ -44,30 +47,6 @@ public class Player extends GameEntity {
             pY = pY + playerSpeed * deltaTime;
         } else if (moveDown) {
             pY = pY - playerSpeed * deltaTime;
-        }
-
-        // In ra thông tin debug
-//        System.out.println("moveLeft: " + moveLeft);
-//        System.out.println("moveRight: " + moveRight);
-//        System.out.println("moveUp: " + moveUp);
-//        System.out.println("moveDown: " + moveDown);
-
-        for(Bullet bullet : bullets)
-        {
-            bullet.update(deltaTime);
-        }
-
-        // Duyệt các phần tử từ đầu đến cuối của một collection.
-        //  Cho phép xóa phần tử khi lặp một collection.
-        Iterator<Bullet> iter = bullets.iterator();
-        while (iter.hasNext()) { // trả về true nếu iterator còn phần tử kế tiếp phần tử đang duyệt
-            Bullet bullet = iter.next(); // trả về phần tử hiện tại và di chuyển con trỏ trỏ tới phần tử tiếp theo.
-            bullet.update(deltaTime);
-
-            // Xóa bullet nếu ra khỏi màn hình
-            if (bullet.bodyReact.y > 500) {
-                iter.remove();
-            }
         }
     }
 
@@ -87,8 +66,7 @@ public class Player extends GameEntity {
                 } else if (keyCode == Input.Keys.S) {
                     moveDown = true;
                 } else if (keyCode == Input.Keys.SPACE) {
-                    bullets.add(new Bullet(drawShape, pX+20, pY+20, Player.this));
-                    System.out.println("ANH YEU EM");
+                    onPlayerShoots();
                 }
                 return true;
             }
@@ -108,5 +86,9 @@ public class Player extends GameEntity {
                 return true;
             }
         });
+    }
+
+    private void onPlayerShoots() {
+        onPlayerShotsListener.run();
     }
 }

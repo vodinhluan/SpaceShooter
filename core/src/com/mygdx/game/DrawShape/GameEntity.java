@@ -8,6 +8,8 @@ public abstract class GameEntity {
     public DrawShape drawShape;
     public Color color = Color.RED;
 
+    public boolean shouldRender = true;
+
     public GameEntity(Rectangle bodyReact, DrawShape drawShape) {
         this.bodyReact = bodyReact;
         this.drawShape = drawShape;
@@ -20,6 +22,8 @@ public abstract class GameEntity {
 
     protected void render(float deltatime)
     {
+        if(!shouldRender) return;
+
         drawShape.drawRect(bodyReact, color);
     }
 
