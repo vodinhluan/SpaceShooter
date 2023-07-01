@@ -1,9 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -11,8 +9,8 @@ import com.mygdx.game.DrawShape.Bullet;
 import com.mygdx.game.DrawShape.DrawShape;
 import com.mygdx.game.DrawShape.Enemy;
 import com.mygdx.game.DrawShape.Player;
+import com.mygdx.game.DrawShape.Score;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +21,7 @@ public class GameScreen extends ScreenAdapter {
     DrawShape drawShape;
     Player player;
     Enemy enemy;
+    Score score;
 
     public List<Bullet> bullets = new ArrayList<>();
 
@@ -40,6 +39,7 @@ public class GameScreen extends ScreenAdapter {
 
         enemy = new Enemy(new Rectangle(250, 350, 50,  25), drawShape);
         bullets = new ArrayList<>();
+        score = new Score(new Rectangle(15, 410, 100, 50), drawShape);
     }
 
     @Override
@@ -54,6 +54,7 @@ public class GameScreen extends ScreenAdapter {
 
         enemy.update(delta);
         player.update(delta);
+        score.update(delta);
 
         List<Bullet> destroyThisBullets = new ArrayList<>();
 
@@ -64,6 +65,7 @@ public class GameScreen extends ScreenAdapter {
             {
                 enemy.bodyReact.x = drawShape.randomX();
                 destroyThisBullets.add(bullet);
+
             }
         }
 
